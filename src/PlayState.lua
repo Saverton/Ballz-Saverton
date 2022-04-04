@@ -3,23 +3,18 @@ PlayState = Class{}
 function PlayState:init()
     self.balls = {}
     self.numOfBalls = NUM_OF_BALLS
-    self.blocks = GenBlocks()
-    self.playState = 'aim'
-    self.aimDirection = math.pi / 2
-    self.shootTimer = nil
-end
-
-function GenBlocks()
-    local blocks = {}
+    self.blocks = {}
     for i = 1, ROWS, 1 do
-        blocks[i] = {}
+        self.blocks[i] = {}
         for j = 1, COLS, 1 do
             --if math.random(2) == 1 then
-                blocks[i][j] = Block(START_ROWS + (i - 1) * BLOCK_SIZE, START_COLS + (i - 1) * BLOCK_SIZE))
+                self.blocks[i][j] = Block(START_ROWS + (i - 1) * BLOCK_SIZE, START_COLS + (i - 1) * BLOCK_SIZE)
             --end
         end
     end
-    return blocks
+    self.playState = 'aim'
+    self.aimDirection = math.pi / 2
+    self.shootTimer = nil
 end
 
 function PlayState:update(dt)
@@ -66,9 +61,8 @@ function PlayState:update(dt)
 end
 
 function PlayState:fire()
-    local count = 2
-    self.balls[1] = Ball(self.aimDirection)
-    self.shootTimer = Timer.every(0.05, function()
+    local count = 1
+    Timer.after(0.05, function()
         if count > NUM_OF_BALLS then
             Timer.clear(self.shootTimer)
         else
