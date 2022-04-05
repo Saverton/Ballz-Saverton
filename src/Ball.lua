@@ -4,18 +4,23 @@ function Ball:init(dir)
     self.x = VIRTUAL_WIDTH / 2
     self.y = VIRTUAL_HEIGHT
     self.size = BALL_SIZE
-    self.dx = BALL_SPEED * math.cos(dir)
-    self.dy = BALL_SPEED * math.sin(dir)
+    self.dx = BALL_SPEED * math.cos(math.pi - dir)
+    self.dy = BALL_SPEED * math.sin(math.pi - dir)
 end
 
 function Ball:update(dt)
     self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
 
-    if math.abs(VIRTUAL_WIDTH / 2 - (self.x + self.size / 2)) > 90 then
+    if VIRTUAL_WIDTH / 2 - 3 * BLOCK_SIZE > self.x then
+        self.x = VIRTUAL_WIDTH / 2 - 3 * BLOCK_SIZE
         self:collides(2)
-    elseif self.y < 0 then
-        self:collides(1)
+    elseif self.x + self.size > VIRTUAL_WIDTH / 2 + 3 * BLOCK_SIZE then
+        self.x = VIRTUAL_WIDTH / 2 + 3 * BLOCK_SIZE - self.size
+        self:collides(4)
+    elseif self.y < 1 then
+        self.y = 1
+        self:collides(3)
     end
 end 
 

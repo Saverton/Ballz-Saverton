@@ -19,7 +19,7 @@ function love.load()
         resizable = true
     })
 
-    love.graphics.setFont(gFonts['medium'])
+    love.graphics.setFont(gFonts['small'])
     
     love.keyboard.keysPressed = {}
     MouseInput = {}
