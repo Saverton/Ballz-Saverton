@@ -24,19 +24,25 @@ function Block:checkCollisions(balls, tolerance)
             self:hit()
             local x = self.x - ball.x
             local y = self.y - ball.y
-            if math.abs(math.abs(x) - ball.size) < tolerance then
-                ball.x = self.x - ball.size
-                ball:collides(4)
-            elseif math.abs(math.abs(x) - self.size) < tolerance then
-                ball.x = self.x + self.size
-                ball:collides(2)
-            elseif math.abs(math.abs(y) - ball.size) < tolerance then
+            local distTop = math.abs(ball.y + ball.size - self.y)
+            local distBot = math.abs(self.y + self.size - ball.y)
+            local distL = math.abs(ball.x + ball.size - self.x)
+            local distR = math.abs(self.x + self.size - ball.x)
+            local minDist = math.min(distTop, distBot, distL, distR)
+            if minDist == distTop then
                 ball.y = self.y - ball.size
                 ball:collides(1)
-            else
+            elseif minDist == distR then
+                ball.x = self.x + self.size
+                ball:collides(2)
+            elseif minDist == distBot then
                 ball.y = self.y + self.size
                 ball:collides(3)
+            else
+                ball.x = self.x - ball.size
+                ball:collides(4)
             end
+
             if self.health == 0 then
                 return
             end
